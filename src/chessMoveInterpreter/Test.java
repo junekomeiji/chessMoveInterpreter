@@ -35,35 +35,58 @@ class Move{
     
     public String moveresult(){
         
-        String moveresult = "Move ";
+        String moveresult = "";
+        int pointer = 0;
+        boolean capture = false;
+        boolean alphabetSeen = false;
+        boolean seenPiece = false;
         
-        char fC = this.move.charAt(0);
+        String c1 = "";
+        String c2 = "";  
         
-        
-        if(Character.isUpperCase(fC)){
-            switch(fC){
-                case 'K' -> moveresult += "King ";
-                case 'Q' -> moveresult += "Queen ";
-                case 'R' -> moveresult += "Rook ";
-                case 'B' -> moveresult += "Bishop ";
-                case 'N' -> moveresult += "Knight ";
-                default -> moveresult = "Invalid move!";
+        while(pointer < this.move.length()){
+            
+            char cc = this.move.charAt(pointer);
+            
+            if(seenPiece == false){
+                if(Character.isUpperCase(cc)){
+                switch(cc){
+                    case 'K' -> moveresult += "King ";
+                    case 'Q' -> moveresult += "Queen ";
+                    case 'R' -> moveresult += "Rook ";
+                    case 'B' -> moveresult += "Bishop ";
+                    case 'N' -> moveresult += "Knight ";
+                    default -> moveresult = "Invalid piece!";
+                }
+                    seenPiece = true;
+                }
+                
+                else if(Character.isLowerCase(cc)){
+                moveresult += "Pawn ";
+                seenPiece = true;
+                } else {
+                return "Invalid move!";
+                }
+                
             }
-            
-            moveresult += this.move.substring(1, 3);
-        
-            
+           
+                
+            if((Character.isLowerCase(cc) || Character.isDigit(cc)) && cc != 'x'){
+                c1 += cc;
+                alphabetSeen = true;
+            } else if(cc == 'x'){
+                capture = true;
+            }    
+            pointer++;
         }
-        else if(Character.isLowerCase(fC)){
-            moveresult += "Pawn to ";
-            
-             moveresult += this.move.substring(0, 2);
-            
+        
+        if(c2.isEmpty()){
+                if(capture == true) moveresult += ("captures piece at " + c1);
+                else moveresult += ("moves to " + c1);
         } else {
-            return "Invalid move!";
+                if(capture == true) moveresult += ("at " + c1 + "captures piece at " + c2);
+                else moveresult += ("at " + c1 + "moves to " + c2);
         }
-        
-        
         
         return moveresult;
     }
