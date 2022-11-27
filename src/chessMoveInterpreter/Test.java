@@ -38,7 +38,7 @@ class Move{
         String moveresult = "";
         int pointer = 0;
         boolean capture = false;
-        boolean alphabetSeen = false;
+        boolean characterSeen = false;
         boolean seenPiece = false;
         
         String c1 = "";
@@ -70,11 +70,16 @@ class Move{
                 
             }
            
-                
-            if((Character.isLowerCase(cc) || Character.isDigit(cc)) && cc != 'x'){
+            
+            if((Character.isLowerCase(cc) || Character.isDigit(cc)) && cc != 'x' && characterSeen == false){
                 c1 += cc;
-                alphabetSeen = true;
-            } else if(cc == 'x'){
+                if(Character.isLowerCase(cc)) characterSeen = true;
+                if(!(c1.isEmpty()) && Character.isDigit(cc)) characterSeen = true;   
+            }
+            else if ((Character.isLowerCase(cc) || Character.isDigit(cc)) && characterSeen == true){
+                c2 += cc;
+            }
+            else if(cc == 'x'){
                 capture = true;
             }    
             pointer++;
@@ -84,8 +89,8 @@ class Move{
                 if(capture == true) moveresult += ("captures piece at " + c1);
                 else moveresult += ("moves to " + c1);
         } else {
-                if(capture == true) moveresult += ("at " + c1 + "captures piece at " + c2);
-                else moveresult += ("at " + c1 + "moves to " + c2);
+                if(capture == true) moveresult += ("at " + c1 + " captures piece at " + c2);
+                else moveresult += ("at " + c1 + " moves to " + c2);
         }
         
         return moveresult;
